@@ -1,10 +1,19 @@
 #criação da classe que define os atributos dos produtos
+from turtle import goto
+
+
 class mercadoria:
     codigoProduto = 0
     nomeMercadoria = ''
     precoMercadoria = 0.00
     codigoMercadoria = 0
     quantidadeEstoque = 0
+
+class compra:
+    codigoProd = 0
+    quantidadeProd = 0
+    nomeProd = ''
+    total = 0.00
 
 #cadastro de novos produtos no sistema do mercado
 def cadastroMercadoria(idProduto):
@@ -19,43 +28,108 @@ def cadastroMercadoria(idProduto):
     return produto
 
 def atualizaProduto(mercado, cod):
-    if len(mercado) == 0:
+    existe = 0
+    for i in range(len(mercado)):
+        if cod == mercado[i].codigoProduto:
+            existe = 1
+            print("\t\t\tO QUE DESEJA ATUALIZAR?\n")
+            print("[6] Preço")
+            print("[7] Estoque")
+            print("[8] Preço e estoque")
+            print("[9] Voltar")
+            atualiza=int(input("\nEscolha uma opção: "))
+            #return atualiza
+            print("\n")
+
+            if atualiza == 6:
+                print("Preço atual: ", mercado[i].precoMercadoria)
+                mercado[i].precoMercadoria=float(input("Novo preço: "))
+                print("\n")
+                break
+            
+            elif atualiza == 7:
+                print("Estoque atual: ", mercado[i].quantidadeEstoque)
+                mercado[i].quantidadeEstoque=int(input("Nova quantidade em estoque: "))
+                print("\n")
+                break
+
+            elif atualiza == 8:
+                print("Preço atual: ", mercado[i].precoMercadoria)
+                print("Estoque atual: ", mercado[i].quantidadeEstoque)
+                print("\n")
+                mercado[i].precoMercadoria=float(input("Novo preço: "))
+                mercado[i].quantidadeEstoque=int(input("Nova quantidade em estoque: "))
+                print("\n")
+                break
+            elif atualiza == 9:
+                break
+            else:
+                print("Opção Inválida!")
+                atualizaProduto(mercado, cod)
+
+    if existe == 0:
         print("Produto não Cadastrado!\n")
-    print("\t\t\tO QUE DESEJA ATUALIZAR?\n")
-    print("[6] Preço")
-    print("[7] Estoque")
-    print("[8] Preço e estoque")
-    atualiza=int(input("\nEscolha uma opção: "))
-    #return atualiza
+
+
+def registraCompra(mercado, cod):
+    
+    regComp=compra()
+    for i in range(len(mercado)):
+            if cod == mercado[i].codigoProduto:
+                print("Nome do Produto: ", mercado[i].nomeMercadoria)
+                print("\n")
+                break
+    qtd=int(input("Quantidade: "))
+    if qtd > mercado[i].quantidadeEstoque:
+        print("Quantidade superior ao estoque!")
+        print("Quantidade em estoque: ", mercado[i].quantidadeEstoque)
+        print("\n")
+    else:
+        mercado[i].quantidadeEstoque = mercado[i].quantidadeEstoque - qtd
+        regComp.codigoProd = mercado[i].codigoProduto
+        regComp.nomeProd = mercado[i].nomeMercadoria
+        regComp.quantidadeProd = qtd
+        regComp.total = mercado[i].precoMercadoria * qtd
+        print("Compra adicionada!\n")
+        return regComp
+        
+
+def chamaCompra(mercado):
+    comp = []
+    totalPagar = 0.0
+    print("Digite 0 no ID do Produto para encerrar compra\n")
+
+    while True:
+        cod=int(input("\nID do Produto: "))
+        if cod != 0:
+            existe = 0
+            for i in range(len(mercado)):
+                if cod == mercado[i].codigoProduto:
+                    existe = 1
+                    novaCompra=registraCompra(mercado, cod)
+                    comp.append(novaCompra)
+                    break
+            if existe == 0:
+                print("Produto não Cadastrado!\n")
+
+        else:
+            print("\nCompra Encerrada!")
+            print("\n")
+            break
+
+    print("\t------------------------------------------------------------------")
+    print("\t\t\t\tCUPOM FISCAL")
+    print("\t------------------------------------------------------------------")
+    print("\tCódigo\t\tProduto\t\tQuantidade\t\tPreço")
+    for i in range(len(comp)):
+        print("\t", comp[i].codigoProd, "\t\t", comp[i].nomeProd, "   \t", comp[i].quantidadeProd, "   \t\t\t", comp[i].total)
+        totalPagar = totalPagar + comp[i].total
+
+    print("\t\t\t\t\t\t\t Total: ", totalPagar)
+    print("\t------------------------------------------------------------------")
     print("\n")
 
-    if atualiza == 6:
-        for i in range(len(mercado)):
-            if cod == mercado[i].codigoProduto:
-                print("Preço atual: ", mercado[i].precoMercadoria)
-                mercado[i].precoMercadoria=float(input("Novo preço: "))
-                print("\n")
     
-    elif atualiza == 7:
-        for i in range(len(mercado)):
-            if cod == mercado[i].codigoProduto:
-                print("Estoque atual: ", mercado[i].quantidadeEstoque)
-                mercado[i].quantidadeEstoque=int(input("Nova quantidade em estoque: "))
-                print("\n")
-
-    elif atualiza == 8:
-        for i in range(len(mercado)):
-            if cod == mercado[i].codigoProduto:
-                print("Preço atual: ", mercado[i].precoMercadoria)
-                print("Estoque atual: ", mercado[i].quantidadeEstoque)
-                print("\n")
-                mercado[i].precoMercadoria=float(input("Novo preço: "))
-                mercado[i].quantidadeEstoque=int(input("Nova quantidade em estoque: "))
-                print("\n")
-    else:
-        print("Opção Inválida!")
-        atualizaProduto(mercado, cod)
-
 
 
 def printaProduto(mercado, cod):
@@ -69,20 +143,20 @@ def printaProduto(mercado, cod):
             print("Quantidade: ", mercado[i].quantidadeEstoque)
             print("\n")
     else:
+        existe = 0
         print("\t\t\tINFORMAÇÕES DO PRODUTO\n")
-        if len(mercado) == 0:
-            print("Produto não Cadastrado!\n")
-            return
         for i in range(len(mercado)):
             if cod == mercado[i].codigoProduto:
+                existe = 1
                 print("ID do Produto: ", mercado[i].codigoProduto)
                 print("Nome do Produto: ", mercado[i].nomeMercadoria)
                 print("Preço: ", mercado[i].precoMercadoria)
                 print("Código de Barras: ", mercado[i].codigoMercadoria)
                 print("Quantidade: ", mercado[i].quantidadeEstoque)
                 print("\n")
-            else:
-                print("Produto não Cadastrado!\n")
+                break
+        if existe == 0:
+            print("Produto não Cadastrado!\n")
 
 
 
@@ -102,7 +176,7 @@ def menu():
     return opcoes
 
 
-mercado=[]
+mercado = []
 idProduto=1
 
 while True:
@@ -115,25 +189,31 @@ while True:
         idProduto += 1
 
     elif op == 2:
-        cod=int(input("\nID do Produto: "))
-        print("\n")
-        for i in range(len(mercado)):
-            if cod == mercado[i].codigoProduto:
-                atualizaProduto(mercado, cod)
-            else:
-                print("Produto não Cadastrado!\n")
+        if len(mercado) == 0:
+            print("Nenhum produto cadastrado!\n")
+        else:
+            cod=int(input("\nID do Produto: "))
+            print("\n")
+            atualizaProduto(mercado, cod)
 
     elif op == 3:
-        novoProduto=cadastroMercadoria()
-        mercado.append(novoProduto)
+        if len(mercado) == 0:
+            print("Nenhum produto cadastrado!\n")
+        else:
+            chamaCompra(mercado)
 
     elif op == 4:
-        cod=int(input("\nID do Produto: "))
-        print("\n")
-        printaProduto(mercado, cod)
+        if len(mercado) == 0:
+            print("Nenhum produto cadastrado!\n")
+        else:
+            cod=int(input("\nID do Produto: "))
+            print("\n")
+            printaProduto(mercado, cod)
 
     elif op== 5:
-        printaProduto(mercado, 0)
+        if len(mercado) == 0:
+            print("Nenhum produto cadastrado!\n")
+        else:
+            printaProduto(mercado, 0)
     else:
         print("Opção Inválida!")
-        menu()
