@@ -140,7 +140,7 @@ def printaProduto(mercado, cod):
             print("ID do Produto: ", mercado[i].codigoProduto)
             print("Nome do Produto: ", mercado[i].nomeMercadoria)
             print("Preço: ", mercado[i].precoMercadoria)
-            print("Código de Barras: ", mercado[i].codigoMercadoria)
+            #print("Código de Barras: ", mercado[i].codigoMercadoria)
             print("Quantidade: ", mercado[i].quantidadeEstoque)
             print("\n")
     else:
@@ -152,7 +152,7 @@ def printaProduto(mercado, cod):
                 print("ID do Produto: ", mercado[i].codigoProduto)
                 print("Nome do Produto: ", mercado[i].nomeMercadoria)
                 print("Preço: ", mercado[i].precoMercadoria)
-                print("Código de Barras: ", mercado[i].codigoMercadoria)
+                #print("Código de Barras: ", mercado[i].codigoMercadoria)
                 print("Quantidade: ", mercado[i].quantidadeEstoque)
                 print("\n")
                 break
