@@ -6,7 +6,7 @@ class mercadoria:
     codigoProduto = 0
     nomeMercadoria = ''
     precoMercadoria = 0.00
-    codigoMercadoria = 0
+    #codigoMercadoria = 0
     quantidadeEstoque = 0
 
 class compra:
@@ -22,7 +22,7 @@ def cadastroMercadoria(idProduto):
     produto.codigoProduto = idProduto
     produto.nomeMercadoria=input("Nome do Produto: ")
     produto.precoMercadoria=float(input("Preço do Produto: "))
-    produto.codigoMercadoria=int(input("Código de Barras do Produto: "))
+    #produto.codigoMercadoria=int(input("Código de Barras do Produto: "))
     produto.quantidadeEstoque=int(input("Quantidade em Estoque: "))
     print("\n")
     return produto
@@ -78,25 +78,26 @@ def registraCompra(mercado, cod):
             if cod == mercado[i].codigoProduto:
                 print("Nome do Produto: ", mercado[i].nomeMercadoria)
                 print("\n")
-                break
-    qtd=int(input("Quantidade: "))
-    if qtd > mercado[i].quantidadeEstoque:
-        print("Quantidade superior ao estoque!")
-        print("Quantidade em estoque: ", mercado[i].quantidadeEstoque)
-        print("\n")
-    else:
-        mercado[i].quantidadeEstoque = mercado[i].quantidadeEstoque - qtd
-        regComp.codigoProd = mercado[i].codigoProduto
-        regComp.nomeProd = mercado[i].nomeMercadoria
-        regComp.quantidadeProd = qtd
-        regComp.total = mercado[i].precoMercadoria * qtd
-        print("Compra adicionada!\n")
-        return regComp
+
+                qtd=int(input("Quantidade: "))
+                if qtd > mercado[i].quantidadeEstoque:
+                    print("Quantidade superior ao estoque!")
+                    print("Quantidade em estoque: ", mercado[i].quantidadeEstoque)
+                    print("Compra não realizada!\n")
+                else:
+                    mercado[i].quantidadeEstoque = mercado[i].quantidadeEstoque - qtd
+                    regComp.codigoProd = mercado[i].codigoProduto
+                    regComp.nomeProd = mercado[i].nomeMercadoria
+                    regComp.quantidadeProd = qtd
+                    regComp.total = mercado[i].precoMercadoria * qtd
+                    print("Compra adicionada!\n")
+                    return regComp
         
 
 def chamaCompra(mercado):
     comp = []
     totalPagar = 0.0
+    print("\t\t\tCOMPRA\n")
     print("Digite 0 no ID do Produto para encerrar compra\n")
 
     while True:
